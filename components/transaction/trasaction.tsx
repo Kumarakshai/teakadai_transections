@@ -32,6 +32,7 @@ export const Transactions: React.FC = () => {
     TransactionsData[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
+  console.log(searchTerm);
   const [statusFilter, setStatusFilter] = useState<"PAID" | "PENDING" | "">("");
   const [dateFilter, setDateFilter] = useState<
     "TODAY" | "THIS_WEEK" | "THIS_MONTH" | ""
@@ -109,8 +110,8 @@ export const Transactions: React.FC = () => {
   const TransactionCard: React.FC<{ transaction: TransactionsData }> = ({
     transaction,
   }) => (
-    <Card className="mb-4 hover:shadow-lg transition-shadow duration-300">
-      <CardHeader className="bg-gray-50">
+    <Card className="mb-4 hover:shadow-lg transition-shadow duration-300 ">
+      <CardHeader className="bg-gray-50  border-b rounded-tr-lg rounded-tl-lg">
         <CardTitle className="text-lg font-semibold flex items-center">
           <CreditCard className="mr-2" size={20} />
           {transaction?.user?.name ?? "Guest"}
