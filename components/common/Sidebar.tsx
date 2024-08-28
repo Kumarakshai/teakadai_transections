@@ -4,7 +4,7 @@ import Link from "next/link";
 const Sidebar = () => {
   return (
     <div className="hidden w-64 flex-col border-r bg-background p-4 md:flex">
-      <nav className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         <Link
           href="#"
           className="flex items-center gap-2 rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -25,7 +25,7 @@ const Sidebar = () => {
             <Link href="/transactions">Transactions</Link>
           </span>
         </Link>
-      </nav>
+      </div>
     </div>
   );
 
