@@ -19,11 +19,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <div className="flex h-screen">
-          <Sidebar />
-          {children}
-        </div>
+        <main className="w-[100vw] h-[100vh] overflow-hidden">
+          {/* topbar */}
+          <div className="w-full h-[7vh]">
+            <Navbar />
+          </div>
+          <div className="w-full h-[93vh] flex flex-row ">
+            <div className="w-[20vw] h-full">
+              <Sidebar />
+            </div>
+            <div className="flex-1 h-full overflow-auto">{children}</div>
+          </div>
+        </main>
       </body>
     </html>
   );
