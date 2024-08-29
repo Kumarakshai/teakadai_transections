@@ -22,6 +22,8 @@ import {
   X,
   List,
   Grid,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { TransactionsData } from "@/types";
 
@@ -32,12 +34,13 @@ export const Transactions: React.FC = () => {
     TransactionsData[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
-  console.log(searchTerm);
   const [statusFilter, setStatusFilter] = useState<"PAID" | "PENDING" | "">("");
   const [dateFilter, setDateFilter] = useState<
     "TODAY" | "THIS_WEEK" | "THIS_MONTH" | ""
   >("");
-  const [viewMode, setViewMode] = useState<"card" | "table">("card");
+  const [viewMode, setViewMode] = useState<"card" | "table">("table");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const getAllTransactionData = async () => {
     try {
@@ -57,12 +60,6 @@ export const Transactions: React.FC = () => {
 
   useEffect(() => {
     const filtered = transactions.filter((transaction: TransactionsData) => {
-      //       const nameMatch =
-      //         transaction?.user?.name
-      //           ?.toLowerCase()
-      //           .includes(searchTerm.toLowerCase()) ?? false;
-      //       const phoneMatch =
-      //         transaction?.user?.phone_no?.includes(searchTerm) ?? false;
       const statusMatch = statusFilter
         ? transaction?.status === statusFilter
         : true;
@@ -91,6 +88,7 @@ export const Transactions: React.FC = () => {
       return statusMatch && dateMatch;
     });
     setFilteredTransactions(filtered);
+    setCurrentPage(1); // Reset to first page when filters change
   }, [searchTerm, statusFilter, dateFilter, transactions]);
 
   const resetFilters = () => {
@@ -99,16 +97,16 @@ export const Transactions: React.FC = () => {
     setDateFilter("");
   };
 
-  //   if (isLoading) {
-  //     return (
-  //       <div className="flex justify-center items-center h-34">
-  //         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
-  //       </div>
-  //     );
-  //   }
+  const pageCount = Math.ceil(filteredTransactions.length / itemsPerPage);
+  const paginatedTransactions = filteredTransactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="space-y-4 p-4 bg-gray-100 rounded-lg">
+      <h1 className="text-2xl font-bold mb-4">Transactions</h1>
+
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow">
         <div className="relative w-full sm:w-64">
           <Input
@@ -202,9 +200,12 @@ export const Transactions: React.FC = () => {
         </p>
       ) : viewMode === "card" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredTransactions.map((transaction: TransactionsData) => (
-            <Card className="mb-4 hover:shadow-lg transition-shadow duration-300 ">
-              <CardHeader className="bg-gray-50  border-b rounded-tr-lg rounded-tl-lg">
+          {paginatedTransactions.map((transaction: TransactionsData) => (
+            <Card
+              key={transaction?.id}
+              className="mb-4 hover:shadow-lg transition-shadow duration-300"
+            >
+              <CardHeader className="bg-gray-50 border-b rounded-tr-lg rounded-tl-lg">
                 <CardTitle className="text-lg font-semibold flex items-center">
                   <CreditCard className="mr-2" size={20} />
                   {transaction?.user?.name ?? "Guest"}
@@ -240,6 +241,7 @@ export const Transactions: React.FC = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-gray-500">
+                      Date:
                       {transaction?.createdAt
                         ? new Date(transaction.createdAt).toLocaleDateString()
                         : "N/A"}
@@ -273,7 +275,7 @@ export const Transactions: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTransactions.map((transaction: TransactionsData) => (
+              {paginatedTransactions.map((transaction: TransactionsData) => (
                 <TableRow key={transaction?.id ?? Math.random().toString()}>
                   <TableCell>
                     <div>{transaction?.user?.name ?? "Guest"}</div>
@@ -281,14 +283,12 @@ export const Transactions: React.FC = () => {
                       {transaction?.user?.phone_no ?? "N/A"}
                     </div>
                   </TableCell>
-
                   <TableCell>
                     {transaction?.createdAt
                       ? new Date(transaction.createdAt).toLocaleDateString()
                       : "N/A"}
                   </TableCell>
                   <TableCell>₹{transaction?.totalPrice ?? 0}</TableCell>
-
                   <TableCell>₹{transaction?.paidAmount ?? 0}</TableCell>
                   <TableCell>
                     {transaction?.products?.reduce(
@@ -314,6 +314,41 @@ export const Transactions: React.FC = () => {
           </Table>
         </div>
       )}
+
+      {/* Pagination Controls */}
+      <div className="flex justify-between items-center mt-4 bg-white p-4 rounded-lg shadow">
+        <div className="text-sm text-gray-500">
+          Showing{" "}
+          {Math.min(
+            (currentPage - 1) * itemsPerPage + 1,
+            filteredTransactions.length
+          )}{" "}
+          to {Math.min(currentPage * itemsPerPage, filteredTransactions.length)}{" "}
+          of {filteredTransactions.length} entries
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft size={16} />
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, pageCount))
+            }
+            disabled={currentPage === pageCount}
+          >
+            Next
+            <ChevronRight size={16} />
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

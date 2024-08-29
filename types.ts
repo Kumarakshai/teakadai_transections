@@ -51,3 +51,24 @@ export interface User {
   otp: null;
   otpExpiresAt: null;
 }
+
+export interface ShopData {
+  id: string;
+  item_id: string;
+  shop_id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isBestSelling: boolean;
+  price: number;
+  quantity: number;
+  item: Item;
+}
+
+export interface Item {
+  id: string;
+  name: string;
+  category: string;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

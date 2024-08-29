@@ -15,14 +15,14 @@ const Navbar = () => {
   return (
     <div className=" w-full h-full border-b  flex flex-row justify-between items-center px-16  ">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
-        <span className="font-semibold"> Transactions</span>
+        <span className="font-bold text-2xl"> Transactions</span>
       </Link>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="rounded-full">
             <img
-              src="/placeholder.svg"
+              src="/boy.png"
               width={36}
               height={36}
               alt="A"

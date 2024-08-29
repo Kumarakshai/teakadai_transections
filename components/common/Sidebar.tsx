@@ -1,5 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import { RxDashboard } from "react-icons/rx";
+import { RiExchange2Fill } from "react-icons/ri";
+import { FaList } from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -7,19 +10,27 @@ const Sidebar = () => {
       <div className="flex-1 overflow-auto px-4 py-6">
         <Link
           href="/"
-          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+          className="flex items-center gap-2 rounded-md px-3 py-3 text-md font-medium transition-colors hover:bg-gray-200 hover:text-foreground"
           prefetch={false}
         >
-          <HomeIcon className="h-5 w-5" />
+          <RxDashboard className="h-5 w-5" />
           Dashboard
         </Link>
         <Link
           href="/transactions"
-          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+          className="flex items-center gap-2 rounded-md px-3 py-3 text-md font-medium transition-colors hover:bg-gray-200 hover:text-foreground"
           prefetch={false}
         >
-          <HomeIcon className="h-5 w-5" />
+          <RiExchange2Fill className="h-5 w-5" />
           Transactions
+        </Link>
+        <Link
+          href="/products"
+          className="flex items-center gap-2 rounded-md px-3 py-3 text-md font-medium transition-colors hover:bg-gray-200 hover:text-foreground"
+          prefetch={false}
+        >
+          <FaList className="h-5 w-5" />
+          Products
         </Link>
       </div>
     </div>
