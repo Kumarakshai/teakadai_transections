@@ -79,7 +79,7 @@ export const Products = () => {
   );
 
   return (
-    <div className="space-y-4 p-4 bg-gray-100 rounded-lg">
+    <div className="space-y-4 p-4 bg-gray-100">
       <h1 className="text-2xl font-bold mb-4">Products</h1>
 
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow">

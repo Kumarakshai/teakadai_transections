@@ -34,9 +34,10 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { TransactionsData } from "@/types";
+import Products from "../common/Products";
+import { useModalStore } from "@/store/modalStore";
 
 export const Transactions = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<TransactionsData[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<
     TransactionsData[]
@@ -46,10 +47,10 @@ export const Transactions = () => {
   const [dateFilter, setDateFilter] = useState<
     "TODAY" | "THIS_WEEK" | "THIS_MONTH" | ""
   >("");
-  const [viewMode, setViewMode] = useState<"card" | "table">("table");
+  const [viewMode, setViewMode] = useState<"card" | "table">("card");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const [open, setOpen] = useState(false);
+  const setOpen = useModalStore((state: any) => state.setOpen);
 
   const getAllTransactionData = async () => {
     try {
@@ -58,8 +59,6 @@ export const Transactions = () => {
       setFilteredTransactions(data.data);
     } catch (error) {
       console.error("Error fetching transactions:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -113,7 +112,7 @@ export const Transactions = () => {
   );
 
   return (
-    <div className="space-y-4 p-4 bg-gray-100 rounded-lg">
+    <div className="space-y-4 p-4 bg-gray-100">
       <div className="flex felx-row justify-between">
         <h1 className="text-2xl font-bold mb-4">Transactions</h1>
         <Button
@@ -125,8 +124,10 @@ export const Transactions = () => {
         </Button>
       </div>
 
+      <Products />
+
       {/* Dialog component */}
-      <Dialog open={open} onOpenChange={setOpen}>
+      {/* <Dialog>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Dialog Title</DialogTitle>
@@ -136,7 +137,7 @@ export const Transactions = () => {
             <Button onClick={() => setOpen(false)}>Close</Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow">
         <div className="relative w-full sm:w-64">
