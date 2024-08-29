@@ -2,6 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { getAllTransaction } from "../../server-action/page";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,6 +49,7 @@ export const Transactions: React.FC = () => {
   const [viewMode, setViewMode] = useState<"card" | "table">("table");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [open, setOpen] = useState(false);
 
   const getAllTransactionData = async () => {
     try {
@@ -105,7 +114,29 @@ export const Transactions: React.FC = () => {
 
   return (
     <div className="space-y-4 p-4 bg-gray-100 rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Transactions</h1>
+      <div className="flex felx-row justify-between">
+        <h1 className="text-2xl font-bold mb-4">Transactions</h1>
+        <Button
+          variant={"outline"}
+          className="text-md"
+          onClick={() => setOpen(true)}
+        >
+          Add Transactions
+        </Button>
+      </div>
+
+      {/* Dialog component */}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Dialog Title</DialogTitle>
+          </DialogHeader>
+          <p>This is a sample dialog box.</p>
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow">
         <div className="relative w-full sm:w-64">

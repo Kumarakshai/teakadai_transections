@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { shopDataList } from "@/config/config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -13,17 +12,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Search,
   Calendar,
   Package,
   DollarSign,
-  Tag,
   List,
   Grid,
   ChevronLeft,
   ChevronRight,
   X,
-  Filter,
 } from "lucide-react";
 
 const Products = () => {
@@ -38,13 +34,6 @@ const Products = () => {
 
   useEffect(() => {
     const filtered = products.filter((product) => {
-      const nameMatch = product.item.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const categoryMatch = categoryFilter
-        ? product.item.category === categoryFilter
-        : true;
-
       const createdAt = new Date(product.createdAt);
       const today = new Date();
       let dateMatch = true;
@@ -66,7 +55,7 @@ const Products = () => {
           break;
       }
 
-      return nameMatch && categoryMatch && dateMatch;
+      return dateMatch;
     });
 
     setFilteredProducts(filtered);
