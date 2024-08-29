@@ -35,7 +35,7 @@ import {
 } from "lucide-react";
 import { TransactionsData } from "@/types";
 
-export const Transactions: React.FC = () => {
+export const Transactions = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<TransactionsData[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<

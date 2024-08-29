@@ -22,7 +22,7 @@ import {
   X,
 } from "lucide-react";
 
-const Products = () => {
+export const Products = () => {
   const [products, setProducts] = useState(shopDataList);
   const [filteredProducts, setFilteredProducts] = useState(shopDataList);
   const [searchTerm, setSearchTerm] = useState("");
