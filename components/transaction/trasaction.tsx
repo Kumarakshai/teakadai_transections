@@ -107,65 +107,6 @@ export const Transactions: React.FC = () => {
   //     );
   //   }
 
-  const TransactionCard: React.FC<{ transaction: TransactionsData }> = ({
-    transaction,
-  }) => (
-    <Card className="mb-4 hover:shadow-lg transition-shadow duration-300 ">
-      <CardHeader className="bg-gray-50  border-b rounded-tr-lg rounded-tl-lg">
-        <CardTitle className="text-lg font-semibold flex items-center">
-          <CreditCard className="mr-2" size={20} />
-          {transaction?.user?.name ?? "Guest"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="pt-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2 flex justify-between items-center">
-            <div className="flex items-center">
-              <CreditCard className="mr-2" size={20} />
-              <span className="font-medium">
-                ₹{transaction?.paidAmount ?? 0}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <Package className="mr-2" size={20} />
-              <span className="font-medium">
-                {transaction?.products?.reduce(
-                  (sum, p) => sum + (p.quantity ?? 0),
-                  0
-                ) ?? 0}{" "}
-                items
-              </span>
-            </div>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">
-              ID: {transaction?.user?.id ?? "N/A"}
-            </p>
-            <p className="text-sm text-gray-500">
-              Phone: {transaction?.user?.phone_no ?? "N/A"}
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-500">
-              {transaction?.createdAt
-                ? new Date(transaction.createdAt).toLocaleDateString()
-                : "N/A"}
-            </p>
-            <p
-              className={`text-sm font-semibold ${
-                transaction?.status === "PAID"
-                  ? "text-green-600"
-                  : "text-yellow-600"
-              }`}
-            >
-              {transaction?.status ?? "Unknown"}
-            </p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-
   return (
     <div className="space-y-4 p-4 bg-gray-100 rounded-lg">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow">
@@ -262,10 +203,60 @@ export const Transactions: React.FC = () => {
       ) : viewMode === "card" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredTransactions.map((transaction: TransactionsData) => (
-            <TransactionCard
-              key={transaction?.id ?? Math.random().toString()}
-              transaction={transaction}
-            />
+            <Card className="mb-4 hover:shadow-lg transition-shadow duration-300 ">
+              <CardHeader className="bg-gray-50  border-b rounded-tr-lg rounded-tl-lg">
+                <CardTitle className="text-lg font-semibold flex items-center">
+                  <CreditCard className="mr-2" size={20} />
+                  {transaction?.user?.name ?? "Guest"}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2 flex justify-between items-center">
+                    <div className="flex items-center">
+                      <CreditCard className="mr-2" size={20} />
+                      <span className="font-medium">
+                        ₹{transaction?.paidAmount ?? 0}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Package className="mr-2" size={20} />
+                      <span className="font-medium">
+                        {transaction?.products?.reduce(
+                          (sum, p) => sum + (p.quantity ?? 0),
+                          0
+                        ) ?? 0}{" "}
+                        items
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">
+                      ID: {transaction?.user?.id ?? "N/A"}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Phone: {transaction?.user?.phone_no ?? "N/A"}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-500">
+                      {transaction?.createdAt
+                        ? new Date(transaction.createdAt).toLocaleDateString()
+                        : "N/A"}
+                    </p>
+                    <p
+                      className={`text-sm font-semibold ${
+                        transaction?.status === "PAID"
+                          ? "text-green-600"
+                          : "text-yellow-600"
+                      }`}
+                    >
+                      {transaction?.status ?? "Unknown"}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       ) : (
