@@ -47,7 +47,7 @@ export const Transactions = () => {
   const [dateFilter, setDateFilter] = useState<
     "TODAY" | "THIS_WEEK" | "THIS_MONTH" | ""
   >("");
-  const [viewMode, setViewMode] = useState<"card" | "table">("card");
+  const [viewMode, setViewMode] = useState<"card" | "table">("table");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const setOpen = useModalStore((state: any) => state.setOpen);
@@ -120,25 +120,10 @@ export const Transactions = () => {
           className="text-md"
           onClick={() => setOpen(true)}
         >
-          Add Transactions
+          + Add
         </Button>
       </div>
-
       <Products />
-
-      {/* Dialog component */}
-      {/* <Dialog>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Dialog Title</DialogTitle>
-          </DialogHeader>
-          <p>This is a sample dialog box.</p>
-          <DialogFooter>
-            <Button onClick={() => setOpen(false)}>Close</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog> */}
-
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow">
         <div className="relative w-full sm:w-64">
           <Input

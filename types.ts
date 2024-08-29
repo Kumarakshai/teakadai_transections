@@ -56,8 +56,8 @@ export interface ShopData {
   id: string;
   item_id: string;
   shop_id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   isBestSelling: boolean;
   price: number;
   quantity: number;
@@ -67,8 +67,8 @@ export interface ShopData {
 export interface Item {
   id: string;
   name: string;
-  category: string;
+  category: string | null;
   image: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

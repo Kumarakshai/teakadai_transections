@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <div className=" w-full h-full border-b  flex flex-row justify-between items-center px-16  ">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
-        <span className="font-bold text-2xl"> Transactions</span>
+        <span className="font-bold text-2xl"> Tea Kadai</span>
       </Link>
 
       <DropdownMenu>
