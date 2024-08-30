@@ -2,14 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllTransaction } from "../../server-action/transaction-action";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -96,10 +88,23 @@ export const Transactions = () => {
             date.getFullYear() === today.getFullYear() &&
             date.getMonth() === today.getMonth();
           break;
+        default:
+          dateMatch = true;
+          break;
       }
 
-      return statusMatch && dateMatch;
+      const searchMatch = searchTerm
+        ? transaction?.user?.name
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          transaction?.user?.phone_no
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        : true;
+
+      return statusMatch && dateMatch && searchMatch;
     });
+
     setFilteredTransactions(filtered);
     setCurrentPage(1);
   }, [searchTerm, statusFilter, dateFilter, transactions]);
