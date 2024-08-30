@@ -55,8 +55,13 @@ export const Transactions = () => {
   const getAllTransactionData = async () => {
     try {
       const data = await getAllTransaction();
-      setTransactions(data.data);
-      setFilteredTransactions(data.data);
+      const sortedTransactions = data.data.sort(
+        (a: TransactionsData, b: TransactionsData) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      setTransactions(sortedTransactions);
+      setFilteredTransactions(sortedTransactions);
     } catch (error) {
       console.error("Error fetching transactions:", error);
     }
@@ -96,7 +101,7 @@ export const Transactions = () => {
       return statusMatch && dateMatch;
     });
     setFilteredTransactions(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   }, [searchTerm, statusFilter, dateFilter, transactions]);
 
   const resetFilters = () => {
@@ -124,78 +129,84 @@ export const Transactions = () => {
         </Button>
       </div>
       <Products />
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow">
-        <div className="relative w-full sm:w-64">
+
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow-lg">
+        {/* Search Input */}
+        <div className="relative w-full lg:w-64 flex-grow">
           <Input
             type="text"
             placeholder="Search by name or phone"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 w-full"
           />
           <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-2">
-          <div className="flex items-center gap-2">
-            <Button
-              variant={statusFilter === "" ? "default" : "outline"}
-              onClick={() => setStatusFilter("")}
-            >
-              All
-            </Button>
-            <Button
-              variant={statusFilter === "PAID" ? "default" : "outline"}
-              onClick={() => setStatusFilter("PAID")}
-              className="flex items-center gap-2"
-            >
-              <CheckCircle size={16} />
-              Paid
-            </Button>
-            <Button
-              variant={statusFilter === "PENDING" ? "default" : "outline"}
-              onClick={() => setStatusFilter("PENDING")}
-              className="flex items-center gap-2"
-            >
-              <Clock size={16} />
-              Pending
-            </Button>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant={dateFilter === "" ? "default" : "outline"}
-              onClick={() => setDateFilter("")}
-            >
-              All Time
-            </Button>
-            <Button
-              variant={dateFilter === "TODAY" ? "default" : "outline"}
-              onClick={() => setDateFilter("TODAY")}
-              className="flex items-center gap-2"
-            >
-              <Calendar size={16} />
-              Today
-            </Button>
-            <Button
-              variant={dateFilter === "THIS_WEEK" ? "default" : "outline"}
-              onClick={() => setDateFilter("THIS_WEEK")}
-              className="flex items-center gap-2"
-            >
-              <Calendar size={16} />
-              This Week
-            </Button>
-            <Button
-              variant={dateFilter === "THIS_MONTH" ? "default" : "outline"}
-              onClick={() => setDateFilter("THIS_MONTH")}
-              className="flex items-center gap-2"
-            >
-              <Calendar size={16} />
-              This Month
-            </Button>
-          </div>
+        {/* Status Filters */}
+        <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt-4 lg:mt-0">
+          <Button
+            variant={statusFilter === "" ? "default" : "outline"}
+            onClick={() => setStatusFilter("")}
+            className="w-full lg:w-auto"
+          >
+            All
+          </Button>
+          <Button
+            variant={statusFilter === "PAID" ? "default" : "outline"}
+            onClick={() => setStatusFilter("PAID")}
+            className="flex items-center gap-2 w-full lg:w-auto"
+          >
+            <CheckCircle size={16} />
+            Paid
+          </Button>
+          <Button
+            variant={statusFilter === "PENDING" ? "default" : "outline"}
+            onClick={() => setStatusFilter("PENDING")}
+            className="flex items-center gap-2 w-full lg:w-auto"
+          >
+            <Clock size={16} />
+            Pending
+          </Button>
         </div>
 
-        <div className="flex gap-2">
+        {/* Date Filters */}
+        <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt-4 lg:mt-0">
+          <Button
+            variant={dateFilter === "" ? "default" : "outline"}
+            onClick={() => setDateFilter("")}
+            className="w-full lg:w-auto"
+          >
+            All Time
+          </Button>
+          <Button
+            variant={dateFilter === "TODAY" ? "default" : "outline"}
+            onClick={() => setDateFilter("TODAY")}
+            className="flex items-center gap-2 w-full lg:w-auto"
+          >
+            <Calendar size={16} />
+            Today
+          </Button>
+          <Button
+            variant={dateFilter === "THIS_WEEK" ? "default" : "outline"}
+            onClick={() => setDateFilter("THIS_WEEK")}
+            className="flex items-center gap-2 w-full lg:w-auto"
+          >
+            <Calendar size={16} />
+            This Week
+          </Button>
+          <Button
+            variant={dateFilter === "THIS_MONTH" ? "default" : "outline"}
+            onClick={() => setDateFilter("THIS_MONTH")}
+            className="flex items-center gap-2 w-full lg:w-auto"
+          >
+            <Calendar size={16} />
+            This Month
+          </Button>
+        </div>
+
+        {/* View Mode and Reset Filters */}
+        <div className="flex gap-2 mt-4 lg:mt-0">
           <Button
             variant="outline"
             size="icon"
@@ -284,6 +295,7 @@ export const Transactions = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Customer</TableHead>
+                <TableHead>Phone</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Total Amount</TableHead>
                 <TableHead>Paid Amount</TableHead>
@@ -296,7 +308,9 @@ export const Transactions = () => {
                 <TableRow key={transaction?.id ?? Math.random().toString()}>
                   <TableCell>
                     <div>{transaction?.user?.name ?? "Guest"}</div>
-                    <div className="text-sm text-gray-500">
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-s">
                       {transaction?.user?.phone_no ?? "N/A"}
                     </div>
                   </TableCell>

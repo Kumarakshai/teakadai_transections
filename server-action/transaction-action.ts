@@ -1,5 +1,3 @@
-// "use server";
-
 import { Axios } from "@/lib/axios";
 
 export const getAllTransaction = async () => {

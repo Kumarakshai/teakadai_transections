@@ -165,8 +165,8 @@ export const Products = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2 flex justify-between items-center">
                     <div className="flex items-center">
-                      <DollarSign className="mr-2" size={20} />
-                      <span className="font-medium">{product.price}</span>
+                      {/* <DollarSign className="mr-2" size={20} /> */}
+                      <span className="font-medium"> ₹ {product.price}</span>
                     </div>
                     <div className="flex items-center">
                       <Package className="mr-2" size={20} />
@@ -213,7 +213,7 @@ export const Products = () => {
                     </div>
                   </TableCell>
                   <TableCell>{product.item.category}</TableCell>
-                  <TableCell>${product.price}</TableCell>
+                  <TableCell>₹ {product.price}</TableCell>
                   <TableCell>{product.quantity}</TableCell>
                   <TableCell>
                     {new Date(product.createdAt).toLocaleDateString()}

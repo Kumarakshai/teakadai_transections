@@ -54,6 +54,9 @@ const ProductList = () => {
       status: status,
     };
     const transaction = await createTransaction(OrderedItmes);
+    if (transaction) {
+      window.location.reload();
+    }
   };
 
   return (
@@ -86,7 +89,7 @@ const ProductList = () => {
                 <CardContent className="p-4 bg-gray-50">
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-semibold text-gray-800">
-                      $ {item.price.toFixed(2)}
+                      ₹ {item.price.toFixed(2)}
                     </span>
                     <div className="flex items-center space-x-2">
                       <Button
