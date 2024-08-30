@@ -13,7 +13,6 @@ import { useModalStore } from "@/store/modalStore";
 import { shopDataList } from "@/config/config";
 import { Plus, Minus, ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
-import { ShopData } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ProductList: React.FC = () => {
@@ -26,77 +25,23 @@ const ProductList: React.FC = () => {
         <DialogHeader className="p-6 border-b">
           <DialogTitle className="text-2xl font-bold">Products</DialogTitle>
         </DialogHeader>
-        <div className="flex-grow overflow-y-auto p-6">
+        <div className="flex-grow overflow-y-auto p-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {shopDataList.map((item: any) => (
-              //                <Card key={item.id} className="overflow-hidden">
-              //           <CardHeader className="p-4">
-              //             <CardTitle className="text-lg">
-              //               <div className="flex flex-row gap-3">
-              //                 <img
-              //                   src={item.item.image}
-              //                   alt={`${item.item.category} Image`}
-              //                   className="object-cover w-16 h-16"
-              //                 />
-              //                 <div className="mt-5">{item.item.category}</div>
-              //               </div>
-              //             </CardTitle>
-              //           </CardHeader>
-              //           <CardContent className="p-4">
-              //             <div className="flex justify-between items-center">
-              //               <span className="text-lg font-semibold">
-              //                 ${item.price.toFixed(2)}
-              //               </span>
-              //               <div className="flex items-center space-x-2">
-              //                 <Button
-              //                   variant="outline"
-              //                   size="sm"
-              //                   onClick={() => removeItem(item.id)}
-              //                   disabled={
-              //                     !selectedItems.find(
-              //                       (selectedItem) =>
-              //                         selectedItem.product.id === item.id
-              //                     )
-              //                   }
-              //                 >
-              //                   <Minus size={16} />
-              //                 </Button>
-              //                 <Input
-              //                   type="text"
-              //                   className="w-12 text-center"
-              //                   value={
-              //                     selectedItems.find(
-              //                       (selectedItem) =>
-              //                         selectedItem.product.id === item.id
-              //                     )?.quantity || 0
-              //                   }
-              //                   readOnly
-              //                 />
-              //                 <Button
-              //                   variant="outline"
-              //                   size="sm"
-              //                   onClick={() => addItem(item)}
-              //                 >
-              //                   <Plus size={16} />
-              //                 </Button>
-              //               </div>
-              //             </div>
-              //           </CardContent>
-              //         </Card>
               <Card
                 key={item.id}
                 className="overflow-hidden shadow-lg rounded-lg"
               >
-                <CardHeader className="p-4 bg-gradient-to-r from-slate-50 to-slate-200">
+                <CardHeader className="p-4 bg-gradient-to-r from-slate-50 to-slate-100">
                   <CardTitle className="text-lg text-white">
                     <div className="flex flex-row gap-3">
                       <img
                         src={item.item.image}
                         alt={`${item.item.category} Image`}
-                        className="object-cover w-16 h-16 rounded-full border-2 border-white shadow-md"
+                        className="object-cover w-16 h-16 rounded-lg border-2 border-white shadow-md"
                       />
                       <div className="mt-5 text-black">
-                        {item.item.category}
+                        {item?.item?.category ?? "N/A"}
                       </div>
                     </div>
                   </CardTitle>
@@ -104,7 +49,7 @@ const ProductList: React.FC = () => {
                 <CardContent className="p-4 bg-gray-50">
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-semibold text-gray-800">
-                      ${item.price.toFixed(2)}
+                      $ {item.price.toFixed(2)}
                     </span>
                     <div className="flex items-center space-x-2">
                       <Button
@@ -157,7 +102,7 @@ const ProductList: React.FC = () => {
                   console.log(selectedItems);
                 }}
               >
-                Proceed to Billing
+                Pay
               </Button>
             </div>
           </div>
