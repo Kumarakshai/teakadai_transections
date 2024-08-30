@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,14 +10,49 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useModalStore } from "@/store/modalStore";
-import { shopDataList } from "@/config/config";
 import { Plus, Minus, ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getAllProducts } from "@/server-action/page";
+import { ShopData } from "@/types";
 
-const ProductList: React.FC = () => {
+const ProductList = () => {
   const { isOpen, setOpen } = useModalStore();
   const { selectedItems, addItem, removeItem, calculateTotal } = useCartStore();
+  const [productData, serProductData] = useState<ShopData[]>([]);
+
+  const getAllProductsData = async () => {
+    try {
+      const data = await getAllProducts();
+      serProductData(data.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+  useEffect(() => {
+    getAllProductsData();
+  }, []);
+
+  const uniqueproductData = Array.from(
+    new Map(productData.map((item) => [item.item.name, item])).values()
+  );
+
+  interface ItemTypes {
+    product: ShopData;
+    quantity: number;
+  }
+
+  const Payment = async (status: string) => {
+    const OrderedItmes = {
+      user_id: "null",
+      products: selectedItems.map((info: ItemTypes) => ({
+        id: info.product.id,
+        quantity: info.quantity,
+      })),
+      status: status,
+    };
+    console.log("Orders", OrderedItmes);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
@@ -27,12 +62,12 @@ const ProductList: React.FC = () => {
         </DialogHeader>
         <div className="flex-grow overflow-y-auto p-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {shopDataList.map((item: any) => (
+            {uniqueproductData.map((item: ShopData) => (
               <Card
                 key={item.id}
                 className="overflow-hidden shadow-lg rounded-lg"
               >
-                <CardHeader className="p-4 bg-gradient-to-r from-slate-50 to-slate-100">
+                <CardHeader className="p-4 bg-gradient-to-r from-slate-50 to-slate-100 ">
                   <CardTitle className="text-lg text-white">
                     <div className="flex flex-row gap-3">
                       <img
@@ -40,8 +75,8 @@ const ProductList: React.FC = () => {
                         alt={`${item.item.category} Image`}
                         className="object-cover w-16 h-16 rounded-lg border-2 border-white shadow-md"
                       />
-                      <div className="mt-5 text-black">
-                        {item?.item?.category ?? "N/A"}
+                      <div className="text-black text-sm">
+                        {item?.item?.name ?? "N/A"}
                       </div>
                     </div>
                   </CardTitle>
@@ -86,7 +121,6 @@ const ProductList: React.FC = () => {
             ))}
           </div>
         </div>
-
         <DialogFooter className="mt-auto p-6 border-t">
           <div className="w-full flex justify-between items-center">
             <div className="text-lg font-semibold flex items-center">
@@ -98,9 +132,15 @@ const ProductList: React.FC = () => {
                 Close
               </Button>
               <Button
-                onClick={() => {
-                  console.log(selectedItems);
-                }}
+                disabled={selectedItems.length < 1}
+                onClick={() => Payment("Account")}
+                className="bg-gradient-to-r from-slate-200 to-slate-200 text-black py-2 px-4 rounded-lg shadow-lg hover:from-slate-300 hover:to-slate-300 transition-all duration-300"
+              >
+                Account
+              </Button>
+              <Button
+                disabled={selectedItems.length < 1}
+                onClick={() => Payment("Paid")}
               >
                 Pay
               </Button>

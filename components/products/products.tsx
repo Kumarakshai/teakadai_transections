@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { shopDataList } from "@/config/config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,16 +20,31 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
+import { getAllProducts } from "@/server-action/page";
+import { ShopData } from "@/types";
 
 export const Products = () => {
-  const [products, setProducts] = useState(shopDataList);
-  const [filteredProducts, setFilteredProducts] = useState(shopDataList);
+  const [products, setProducts] = useState<ShopData[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ShopData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [viewMode, setViewMode] = useState("table");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const getAllProductsData = async () => {
+    try {
+      const data = await getAllProducts();
+      setProducts(data.data);
+      setFilteredProducts(data.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+  useEffect(() => {
+    getAllProductsData();
+  }, []);
 
   useEffect(() => {
     const filtered = products.filter((product) => {
@@ -72,10 +86,6 @@ export const Products = () => {
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
-  );
-
-  const uniqueCategories = Array.from(
-    new Set(products.map((product) => product.item.category))
   );
 
   return (
