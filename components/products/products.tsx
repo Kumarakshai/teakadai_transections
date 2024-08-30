@@ -20,7 +20,7 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
-import { getAllProducts } from "@/server-action/page";
+import { getAllProducts } from "@/server-action/product-action";
 import { ShopData } from "@/types";
 
 export const Products = () => {

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getAllTransaction } from "../../server-action/page";
+import { getAllTransaction } from "../../server-action/transaction-action";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,

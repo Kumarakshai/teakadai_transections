@@ -13,8 +13,9 @@ import { useModalStore } from "@/store/modalStore";
 import { Plus, Minus, ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getAllProducts } from "@/server-action/page";
+import { createTransaction } from "@/server-action/transaction-action";
 import { ShopData } from "@/types";
+import { getAllProducts } from "@/server-action/product-action";
 
 const ProductList = () => {
   const { isOpen, setOpen } = useModalStore();
@@ -44,14 +45,15 @@ const ProductList = () => {
 
   const Payment = async (status: string) => {
     const OrderedItmes = {
-      user_id: "null",
+      user_id: null,
       products: selectedItems.map((info: ItemTypes) => ({
         id: info.product.id,
         quantity: info.quantity,
+        price: info.product.price,
       })),
       status: status,
     };
-    console.log("Orders", OrderedItmes);
+    const transaction = await createTransaction(OrderedItmes);
   };
 
   return (
@@ -133,14 +135,14 @@ const ProductList = () => {
               </Button>
               <Button
                 disabled={selectedItems.length < 1}
-                onClick={() => Payment("Account")}
+                onClick={() => Payment("UNPAID")}
                 className="bg-gradient-to-r from-slate-200 to-slate-200 text-black py-2 px-4 rounded-lg shadow-lg hover:from-slate-300 hover:to-slate-300 transition-all duration-300"
               >
                 Account
               </Button>
               <Button
                 disabled={selectedItems.length < 1}
-                onClick={() => Payment("Paid")}
+                onClick={() => Payment("PAID")}
               >
                 Pay
               </Button>
