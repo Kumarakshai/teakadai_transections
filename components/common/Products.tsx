@@ -90,7 +90,6 @@ const ProductList = () => {
       status: status,
     };
     const transaction = await createTransaction(OrderedItems);
-    console.log("transaction", transaction);
     if (transaction) {
       window.location.reload();
     }
