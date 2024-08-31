@@ -123,7 +123,6 @@ const ProductList = () => {
                         className="ml-2 cursor-pointer text-red-500"
                         size={16}
                         onClick={(e) => {
-                          // e.stopPropagation();
                           setSelectedUser(null);
                         }}
                       />
@@ -151,7 +150,7 @@ const ProductList = () => {
                         key={user.id}
                         onSelect={() => setSelectedUser(user)}
                       >
-                        {user.name}
+                        {user.name} - {user.phone_no}
                       </DropdownMenuItem>
                     ))
                   ) : (

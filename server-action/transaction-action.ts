@@ -9,7 +9,7 @@ export const getAllTransaction = async () => {
 export const createTransaction = async (payload: any) => {
   try {
     const response = await Axios.post("/transactions", payload);
-    console.log(response.data);
+    // console.log(response.data);
     return response;
   } catch (error) {
     console.log("error:", error);

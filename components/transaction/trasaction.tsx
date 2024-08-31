@@ -35,7 +35,7 @@ export const Transactions = () => {
     TransactionsData[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"PAID" | "PENDING" | "">("");
+  const [statusFilter, setStatusFilter] = useState<"PAID" | "UNPAID" | "">("");
   const [dateFilter, setDateFilter] = useState<
     "TODAY" | "THIS_WEEK" | "THIS_MONTH" | ""
   >("");
@@ -116,7 +116,7 @@ export const Transactions = () => {
   };
 
   const pageCount = Math.ceil(filteredTransactions.length / itemsPerPage);
-  const paginatedTransactions = filteredTransactions.slice(
+  const totalTransactions = filteredTransactions.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -166,8 +166,8 @@ export const Transactions = () => {
             Paid
           </Button>
           <Button
-            variant={statusFilter === "PENDING" ? "default" : "outline"}
-            onClick={() => setStatusFilter("PENDING")}
+            variant={statusFilter === "UNPAID" ? "default" : "outline"}
+            onClick={() => setStatusFilter("UNPAID")}
             className="flex items-center gap-2 w-full lg:w-auto"
           >
             <Clock size={16} />
@@ -210,7 +210,7 @@ export const Transactions = () => {
           </Button>
         </div>
 
-        {/* View Mode and Reset Filters */}
+        {/* View and Reset Filters */}
         <div className="flex gap-2 mt-4 lg:mt-0">
           <Button
             variant="outline"
@@ -233,7 +233,7 @@ export const Transactions = () => {
         </p>
       ) : viewMode === "card" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {paginatedTransactions.map((transaction: TransactionsData) => (
+          {totalTransactions.map((transaction: TransactionsData) => (
             <Card
               key={transaction?.id}
               className="mb-4 hover:shadow-lg transition-shadow duration-300"
@@ -309,7 +309,7 @@ export const Transactions = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedTransactions.map((transaction: TransactionsData) => (
+              {totalTransactions.map((transaction: TransactionsData) => (
                 <TableRow key={transaction?.id ?? Math.random().toString()}>
                   <TableCell>
                     <div>{transaction?.user?.name ?? "Guest"}</div>
